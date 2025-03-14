@@ -2,6 +2,10 @@ import streamlit as st
 import pickle
 import numpy as np
 
+import os
+print("Current Directory:", os.getcwd())
+print("Files:", os.listdir())
+
 # Load the trained model
 with open("model(1).pkl", "rb") as f:
     model = pickle.load(f)
