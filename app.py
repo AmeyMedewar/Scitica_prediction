@@ -7,7 +7,7 @@ print("Current Directory:", os.getcwd())
 print("Files:", os.listdir())
 
 # Load the trained model
-with open("model(1).pkl", "rb") as f:
+with open("model (1).pkl", "rb") as f:
     model = pickle.load(f)
 
 # Set page config
