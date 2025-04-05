@@ -1,19 +1,19 @@
 import streamlit as st
-import pickle
+import joblib
 import numpy as np
-
 import os
+
+# Debug info
 print("Current Directory:", os.getcwd())
 print("Files:", os.listdir())
 
 # Load the trained model
-with open("model (1).pkl", "rb") as f:
-    model = pickle.load(f)
+model = joblib.load("model.joblib")
 
-# Set page config
+# Page config
 st.set_page_config(page_title="Sciatica Detection", page_icon="🩺", layout="centered")
 
-# Custom CSS for styling
+# Custom CSS
 st.markdown(
     """
     <style>
@@ -30,12 +30,11 @@ st.markdown(
 # Title
 st.markdown('<h1><p class="header">Sciatica Detection System 🩺</p></h1>', unsafe_allow_html=True)
 
-# Sciatica Information
+# Info
 st.markdown("""#### What is Sciatica?
-Sciatica is a neuropathic syndrome characterized by radicular pain extending from the lumbosacral region to the gluteal and lower extremities, resulting from compression of the lumbosacral nerve root, specifically the sciatic nerve.
-Compression of the sciatic nerve root is primarily attributed to intervertebral disc degeneration or nucleus pulposus herniation, with the nerve originating from L4 to S1 and coursing distally to the foot and ankle.
+Sciatica is a neuropathic syndrome characterized by radicular pain extending from the lumbosacral region to the gluteal and lower extremities, resulting from compression of the lumbosacral nerve root, specifically the sciatic nerve.
+Compression of the sciatic nerve root is primarily attributed to intervertebral disc degeneration or nucleus pulposus herniation, with the nerve originating from L4 to S1 and coursing distally to the foot and ankle.
 """)
-
 
 # Causes and Impact
 st.markdown("""#### Causes of Sciatica
@@ -52,9 +51,8 @@ st.markdown("""#### Causes of Sciatica
 
 st.markdown("---")
 
-# Sciatica Prediction Interface
+# Input UI
 st.markdown('<h2><p class="section-title">Check for Sciatica Symptoms </p></h2>', unsafe_allow_html=True)
-
 col1, col2 = st.columns(2)
 
 with col1:
@@ -69,7 +67,7 @@ with col2:
     neuro_deficit = st.checkbox("🧠 Neurological deficit (Yes=1)")
     sensory_changes = st.checkbox("🔍 Subjective sensory changes (Yes=1)")
 
-# Convert to input format
+# Convert to model input
 input_data = np.array([
     int(below_knee_pain), int(neural_tension), int(slump_positive),
     int(crossed_slr), int(slr_positive), int(reflex_deficit),
@@ -78,6 +76,7 @@ input_data = np.array([
 
 st.markdown("<br>", unsafe_allow_html=True)
 
+# Prediction
 if st.button("🔍 Predict Sciatica"):
     prediction = model.predict(input_data)
     result = "✅ Sciatica Detected" if prediction[0] == 1 else "❌ No Sciatica"
@@ -85,10 +84,10 @@ if st.button("🔍 Predict Sciatica"):
 
 st.markdown("---")
 
-# Disclaimer
+# Footer
 st.markdown('<p class="disclaimer">⚠️ Disclaimer: This model is trained on a small dataset and may not be fully accurate. Please consult a doctor for a proper diagnosis.</p>', unsafe_allow_html=True)
 
-# Dataset Reference
+# Dataset reference
 st.markdown("### Reference Dataset")
 if st.button("🔗 View Dataset"):
     st.markdown("[Click Here](https://www.kaggle.com/datasets/medewaramey/scitica-prediction-dataset)", unsafe_allow_html=True)
